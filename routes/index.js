@@ -40,10 +40,7 @@ var _containsMarker = function (f, d) {
     var dLatLng = d.split(",");
     var dLat = dLatLng[0], dLng = dLatLng[1];
 
-    return dLat >= fSouthWest.lat
-        && dLat <= fNorthEast.lat
-        && dLng >= fSouthWest.lng
-        && dLng <= fNorthEast.lng;
+    return dLat >= fSouthWest.lat && dLat <= fNorthEast.lat && dLng >= fSouthWest.lng && dLng <= fNorthEast.lng;
 }
 
 var _filterFunction = function(filter, dataSourceName){
@@ -71,7 +68,7 @@ var _filterFunction = function(filter, dataSourceName){
             else {
                 //array
                 if (filter[dim].length > 1) {
-                    if (dataDescription.getDataType(dim) == "enum") {
+                    if (dataDescription.getDataType(dim) === "enum") {
                         dimensions[dim].filterFunction(function(d) {
                             return filter[dim].indexOf(d) >= 0; 
                         });
@@ -99,13 +96,13 @@ var _filterFunction = function(filter, dataSourceName){
 
         CURRENTDATA = dimensions[interactiveFiltersConfig[0]["attributeName"]].top(Infinity);
 
-        var reqLength = 100;
+        var reqLength = 10;
         var paginate = true;
         if(CURRENTDATA.length < reqLength)
             paginate = false;
         //console.log(CURRENTDATA);
         results["imageGrid"] = {
-            values: CURRENTDATA.slice(0,500),
+            values: CURRENTDATA.slice(0,100),
             active: 100,
             size: 100,
             state: Math.floor(reqLength/100),
@@ -140,9 +137,12 @@ var _handleFilterRequest = function(req,res) {
 
 var _imageGridNext = function(req, res){
     var dataSourceName = req.query.dataSourceName;
+    console.log(interactiveFilters.getAllDataSources());
     var dimensions = interactiveFilters.getDimensions(dataSourceName),
-        results = {},
-        imageGridData = dimensions["imageGrid"].top(Infinity);
+        results = {};
+    console.log(interactiveFilters);
+    console.log(dimensions);
+    //var    imageGridData = dimensions["imageGrid"].top(Infinity);
 
 
     var state = req.query.state;
@@ -392,9 +392,98 @@ var _getStatistics = function(req, res) {
     res.end(JSON.stringify(statisticsToReturn));
 };
 
+
+/*
+ * Druid and plywood initialization
+ */
+
+var plywood = require('plywood');
+var ply = plywood.ply;
+var $ = plywood.$;
+
+
+var External = plywood.External;
+var druidRequesterFactory = require('plywood-druid-requester').druidRequesterFactory;
+
+
+/* Plywood connection*/ 
+var druidRequester = druidRequesterFactory({
+  host: '127.0.0.1:8082',
+  allowSelectQueries: true
+}); 
+
+var randData = External.fromJS({
+  engine: 'druid', 
+  source: 'out2', 
+  timeAttribute: 'timestamp',
+  allowSelectQueries: true
+
+}, druidRequester);
+
+var context = {
+
+  out2: randData
+};
+
+
+/*
+ *
+ * Function to perform filtering, aggregation and selection on druid server
+ * @param {Object} req
+ * @param {Object} res
+ *
+ */
+
+var _druidRequest = function(req, res) {
+  var filter = {};
+  try{
+    filter = req.query.filter ? JSON.parse(req.query.filter) : {};
+  } catch(e) {
+    console.log(e);
+    filter = {}
+  }
+  console.log(filter);
+  var ex = ply()
+      .apply("out2", $('out2')
+      .filter($("timestamp")
+        .in({
+           start: new Date("2016-12-01T00:00:00Z"),
+           end: new Date("2016-12-12T00:00:00Z")
+          })
+     
+      )
+    );
+  
+  //Apply filters
+  //
+  for(var attribute in filter) {
+
+    var f = filter[attribute];
+    console.log(attribute);
+    console.log(f[0]);
+    ex = ex.apply("out2", $('out2')
+        .filter($(attribute).in(f)));
+    //console.log(ex);
+   // ex = ex.filter($("country").in(query[attribute]));
+
+  }
+
+  
+  ex.compute(context).then(function(data){
+    res.end(JSON.stringify(data.toJS(), null ,2));
+    //res.end();
+  }).done();
+
+
+
+}
+
+
+
 exports.index = function(req, res){
     res.render("index", { title: "Express" });
 };
+exports.druidRequest = _druidRequest;
 exports.populationInfo = _populationInfo;
 exports.handleFilterRequest = _handleFilterRequest;
 exports.tableNext = _tableNext;

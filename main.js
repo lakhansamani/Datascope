@@ -94,6 +94,7 @@ function handleState(req, res, next){
 }
 
 // Listen for filtering requests on ```/data```
+app.use("/druid", routes.druidRequest);
 app.use("/data",routes.handleFilterRequest);
 app.use("/populationInfo", routes.populationInfo);
 app.use("/dataTable/next", routes.tableNext);

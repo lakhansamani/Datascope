@@ -41,7 +41,7 @@ var _containsMarker = function (f, d) {
     var dLat = dLatLng[0], dLng = dLatLng[1];
 
     return dLat >= fSouthWest.lat && dLat <= fNorthEast.lat && dLng >= fSouthWest.lng && dLng <= fNorthEast.lng;
-}
+};
 
 var _filterFunction = function(filter, dataSourceName){
     var dimensions = interactiveFilters.getDimensions(dataSourceName);
@@ -175,7 +175,7 @@ var _tableNext = function(req, res){
     //var dataTableAttributes = visualization.getAttributes("dataTable");
     var dataTableAttributes = [];
 
-    for( i in req.query.columns){
+    for( var i in req.query.columns){
       dataTableAttributes.push(req.query.columns[i].name);
     }
     console.log(dataTableAttributes);
@@ -185,7 +185,7 @@ var _tableNext = function(req, res){
     var searchValue = req.query.search.value;
     if (searchValue) {
         TABLE_DATA = TABLE_DATA.filter(function (row) {
-            for (key in row) {
+            for ( var key in row) {
                 if (row[key].toString().match(searchValue))
                     return true;
             }
@@ -208,7 +208,7 @@ var _tableNext = function(req, res){
             var strcol1 = ""+a[sortColumn];
             var strcol2 = ""+b[sortColumn];
             var comparison;           
-            if(sortDir == "asc"){
+            if(sortDir === "asc"){
                 comparison = (strcol1.localeCompare(strcol2));
             } else {
                 comparison = (strcol2.localeCompare(strcol1));
@@ -315,9 +315,9 @@ var _getStatistics = function(req, res) {
             var summary = dl.summary(TABLE_DATA, [attr])[0];
 
             if (statistics.constructor === String) {
-                if (statistics == "default") {
-                    if (summary["type"] == "number" ||
-                            summary["type"] == "integer") {
+                if (statistics === "default") {
+                    if (summary["type"] === "number" ||
+                            summary["type"] === "integer") {
                         statistics = ["count", "distinct", "min", "max", "mean", "median", "stdev"];
                     } else {
                         statistics = ["count", "distinct"];
@@ -336,7 +336,7 @@ var _getStatistics = function(req, res) {
                     } else {
                         statisticsToReturn[stat] = summary[stat];
                     }
-                })
+                });
             }
         }
     } else {
@@ -397,6 +397,15 @@ var _getStatistics = function(req, res) {
  * Druid and plywood initialization
  */
 
+/*
+ *
+ * Function to perform filtering, aggregation and selection on druid server
+ * @param {Object} req
+ * @param {Object} res
+ *
+ */
+
+
 var plywood = require('plywood');
 var ply = plywood.ply;
 var $ = plywood.$;
@@ -406,6 +415,9 @@ var External = plywood.External;
 var druidRequesterFactory = require('plywood-druid-requester').druidRequesterFactory;
 
 
+
+
+var _druidRequest = function(req, res) {
 /* Plywood connection*/ 
 var druidRequester = druidRequesterFactory({
   host: '127.0.0.1:8082',
@@ -426,16 +438,10 @@ var context = {
 };
 
 
-/*
- *
- * Function to perform filtering, aggregation and selection on druid server
- * @param {Object} req
- * @param {Object} res
- *
- */
-
-var _druidRequest = function(req, res) {
+  
+  
   var filter = {};
+  var response = {};
   try{
     filter = req.query.filter ? JSON.parse(req.query.filter) : {};
   } catch(e) {
@@ -453,7 +459,8 @@ var _druidRequest = function(req, res) {
      
       )
     );
-  
+ 
+ 
   //Apply filters
   //
   for(var attribute in filter) {
@@ -461,22 +468,28 @@ var _druidRequest = function(req, res) {
     var f = filter[attribute];
     console.log(attribute);
     console.log(f[0]);
-    ex = ex.apply("out2", $('out2')
-        .filter($(attribute).in(f)));
+    //ex = ex.apply("out2", $('out2')
+    //.filter($("group").in(["3","4","5"])));
     //console.log(ex);
    // ex = ex.filter($("country").in(query[attribute]));
 
   }
-
-  
+  ex = ex.apply("A" ,$("out2").split("$A", "A").apply("Count", $("out2").count()));
+  response["A"] = {};
+  console.log(ex); 
   ex.compute(context).then(function(data){
-    res.end(JSON.stringify(data.toJS(), null ,2));
+    console.log("data...");
+    console.log(data.toJS());
+    var filteredData = data.toJS();
+    
+    //modify data to look like datascopes data
+
+    //res.end(JSON.stringify(data.toJS(), null ,2));
     //res.end();
   }).done();
 
 
-
-}
+};
 
 
 

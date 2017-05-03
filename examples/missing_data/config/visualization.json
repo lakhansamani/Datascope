@@ -1,0 +1,13 @@
+[
+   {
+      "visualizationType":"dataTable",
+      "attributes":[
+         {
+            "attributeName":"Name"
+         },
+         {
+            "attributeName":"Height"
+         }
+      ]
+   }
+]

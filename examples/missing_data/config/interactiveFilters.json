@@ -1,0 +1,9 @@
+[
+   {
+      "attributeName":"Height",
+      "visualization":{
+         "visType":"rowChart",
+         "height":360
+      }
+   }
+]

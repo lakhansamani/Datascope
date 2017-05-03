@@ -1,0 +1,17 @@
+[
+   {
+      "attributeName":"Name",
+      "attributeType":[
+         "visual"
+      ],
+      "dataProvider":""
+   },
+   {
+      "attributeName":"Height",
+      "attributeType":[
+         "filtering",
+         "visual"
+      ],
+      "datatype":"int"
+   }
+]

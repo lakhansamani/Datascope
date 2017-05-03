@@ -1,0 +1,12 @@
+{
+   "dataSourceAlias":"",
+   "dataSources":[
+      {
+         "sourceName":"tcia",
+         "sourceType":"csvFile",
+         "options":{
+            "path":"data/missing_test.csv"
+         }
+      }
+   ]
+}

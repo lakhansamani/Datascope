@@ -1,4 +1,4 @@
-loadData = function (argument) {
-	// body...
+loadData = function(argument) {
+  // body...
 }
 module.exports = loadData;

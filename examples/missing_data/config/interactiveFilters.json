@@ -5,5 +5,12 @@
          "visType":"rowChart",
          "height":360
       }
+   },
+   {
+      "attributeName":"Team",
+      "visualization":{
+         "visType":"rowChart",
+         "height":360
+      }
    }
 ]

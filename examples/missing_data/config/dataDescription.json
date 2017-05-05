@@ -4,7 +4,8 @@
       "attributeType":[
          "visual"
       ],
-      "dataProvider":""
+      "dataProvider":"",
+      "enforce":"present"
    },
    {
       "attributeName":"Height",
@@ -12,6 +13,16 @@
          "filtering",
          "visual"
       ],
-      "datatype":"int"
+      "datatype":"integer",
+      "enforce":"integer"
+   },
+   {
+      "attributeName":"Team",
+      "attributeType":[
+         "filtering",
+         "visual"
+      ],
+      "datatype":"enum",
+      "enforce":"(Red)|(Blue)|(Green)|(Orange)\\g"
    }
 ]

@@ -53,7 +53,7 @@ var dataDescription = (function() {
     },
     getDataType: function(attribute) {
       return attributes[attribute].datatype;
-    }
+    },
     getEnforceRule: function(attribute) {
       return attributes[attribute].enforce;
     }

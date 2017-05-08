@@ -5,7 +5,7 @@
          "visual"
       ],
       "dataProvider":"",
-      "enforce":"present"
+      "missingVal":"?"
    },
    {
       "attributeName":"Height",
@@ -14,7 +14,7 @@
          "visual"
       ],
       "datatype":"integer",
-      "enforce":"integer"
+      "missingVal":"-1"
    },
    {
       "attributeName":"Team",
@@ -23,6 +23,6 @@
          "visual"
       ],
       "datatype":"enum",
-      "enforce":"(Red)|(Blue)|(Green)|(Orange)\\g"
+      "missingVal":"NA"
    }
 ]

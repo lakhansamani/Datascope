@@ -54,8 +54,8 @@ var dataDescription = (function() {
     getDataType: function(attribute) {
       return attributes[attribute].datatype;
     },
-    getEnforceRule: function(attribute) {
-      return attributes[attribute].enforce;
+    getMissingVal: function(attribute) {
+      return attributes[attribute].missingVal;
     }
   }
 

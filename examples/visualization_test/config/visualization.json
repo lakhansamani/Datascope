@@ -1,0 +1,20 @@
+
+[
+   {
+      "visualizationType":"dataTable",
+      "attributes":[
+         {
+            "attributeName":"Name"
+         },
+         {
+            "attributeName":"Height"
+         },
+         {
+            "attributeName":"Team"
+         },
+         {
+            "attributeName":"Age"
+         }
+      ]
+   }
+]

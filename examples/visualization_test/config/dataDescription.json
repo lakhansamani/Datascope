@@ -1,0 +1,33 @@
+[
+   {
+      "attributeName":"Name",
+      "attributeType":[
+         "visual"
+      ],
+      "dataProvider":""
+   },
+   {
+      "attributeName":"Height",
+      "attributeType":[
+         "filtering",
+         "visual"
+      ],
+      "datatype":"integer"
+   },
+   {
+      "attributeName":"Team",
+      "attributeType":[
+         "filtering",
+         "visual"
+      ],
+      "datatype":"enum"
+   },
+   {
+      "attributeName":"Age",
+      "attributeType":[
+         "filtering",
+         "visual"
+      ],
+      "datatype":"integer"
+   }
+]

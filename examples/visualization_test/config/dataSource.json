@@ -1,0 +1,12 @@
+{
+   "dataSourceAlias":"",
+   "dataSources":[
+      {
+         "sourceName":"VisTest",
+         "sourceType":"csvFile",
+         "options":{
+            "path":"data/data.csv"
+         }
+      }
+   ]
+}

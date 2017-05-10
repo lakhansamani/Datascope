@@ -29,5 +29,20 @@
          "visual"
       ],
       "datatype":"integer"
+   },
+   {
+      "attributeName":"Lemons",
+      "attributeType":[
+         "filtering",
+         "visual"
+      ],
+      "datatype":"integer"
+   },
+   {
+      "attributeName":"Water",
+      "attributeType":[
+         "filtering",
+         "visual"
+      ]
    }
 ]

@@ -1,23 +1,23 @@
 [
    {
-      "attributeName":"Height",
-      "visualization":{
-         "visType":"rowChart",
-         "height":360
-      }
-   },
-   {
       "attributeName":"Team",
       "visualization":{
-         "visType":"pieChart",
-         "height":360
+         "visType":"pieChart"
       }
    },
    {
-      "attributeName":"Age",
+       "attributeName": "Age",
+       "visualization": {
+           "visType": "scatterPlot",
+           "xAttribute":"Age",
+           "yAttribute":"Height"
+       }
+   },
+   {
+      "attributeName":"Water",
       "visualization":{
          "visType":"barChart",
-         "height":360
+         "binFactor": 1
       }
    }
 ]

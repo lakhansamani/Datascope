@@ -14,7 +14,35 @@
          },
          {
             "attributeName":"Age"
+         },
+         {
+            "attributeName":"Socks"
+         },
+         {
+            "attributeName":"Water"
          }
       ]
-   }
+   },
+   {
+    "type": "bubbleChart",
+    "attributes":[
+        {
+            "name": "Height",
+            "type": "x",
+            "dimension": true
+        },
+        {
+            "name": "Age",
+            "type": "y"
+        },
+        {
+            "name": "Socks",
+            "type": "color"
+        },
+        {
+            "name": "Water",
+            "type": "r"
+        }
+    ]
+}
 ]

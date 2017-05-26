@@ -13,13 +13,14 @@ var StatisticsTable = require("./StatisticsTable.jsx");
 var ChartAddons = require("./ChartAddons.jsx");
 
 
-
-var FilteringAttribute = React.createClass({
-    getInitialState: function() {
+class FilteringAttribute extends React.Component {
+    constructor(props, context) {
+        super(props, context);
         this.statistics = {};
-        return {showChart: true, showStatistics:false};
-    },
-    componentWillMount: function(){
+        this.state = {showChart: true, showStatistics:false};
+    }
+
+    componentWillMount() {
      //Initialize crossfilter dimensions and groups before rendering
         var self = this;
         var attributeName = this.props.config.attributeName;
@@ -118,8 +119,8 @@ var FilteringAttribute = React.createClass({
         this.setState({dimension: dim, group: group});
 
 
-    },
-    componentDidMount: function(){
+    }
+    componentDidMount(){
 
         var self = this;
         var visType = this.props.config.visualization.visType;
@@ -298,22 +299,22 @@ var FilteringAttribute = React.createClass({
         }
 
         this.setState({chart: c});
-    },
-    onReset: function(){
+    }
+    onReset(){
 
         //e.preventDefault();
         var c  = this.state.chart;
         //console.log("Reset");
         c.filterAll();
         //dc.renderAll();
-    },
-    showChart: function() {
+    }
+    showChart() {
         var self = this;
         var showChart = self.state.showChart;
         this.props.onToggleShow();
         self.setState({showChart: !showChart});
-    },
-    isFilterActive: function(){
+    }
+    isFilterActive(){
         var dim = this.props.config.attributeName;
         var filters = queryFilter;
         //console.log("Filters");
@@ -324,13 +325,14 @@ var FilteringAttribute = React.createClass({
             }
         }
         return false;
-    },
-    onFilter: function() {
-        if (this.state.showStatistics) {
+    }
+    onFilter() {
+      var self = this;
+        if (self.state.showStatistics) {
             this.refreshStatistics();
         }
-    },
-    showStatistics: function(){
+    }
+    showStatistics(){
         var showStatistics = !this.state.showStatistics;
         this.setState({showStatistics: showStatistics});
 
@@ -339,8 +341,8 @@ var FilteringAttribute = React.createClass({
         } else {
             this.props.onToggleShow();
         }
-    },
-    refreshStatistics: function(){
+    }
+    refreshStatistics(){
         var self = this;
         var attributeName = this.props.config.attributeName;
         var url = "statistics?attr=" + attributeName + "&dataSourceName=" + globalDataSourceName;
@@ -348,8 +350,8 @@ var FilteringAttribute = React.createClass({
             self.statistics[attributeName] = d;
             self.props.onToggleShow();
         });
-    },
-    render: function(){
+    }
+    render(){
         var self = this;
         var divId = "dc-"+this.props.config.attributeName;
         var showChart = self.state.showChart ? {display: "block"} : {display: "none"};
@@ -507,6 +509,6 @@ var FilteringAttribute = React.createClass({
         }
 
     }
-});
+}
 
 module.exports = FilteringAttribute;

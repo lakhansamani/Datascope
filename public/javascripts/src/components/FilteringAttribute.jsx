@@ -3,6 +3,7 @@
 /* global dc */
 /* global queryFilter */
 /* global globalDataSourceName */
+/* global Theme */
 //var queryFilter = {};
 var React = require("react");
 
@@ -11,177 +12,6 @@ var AppStore = require("../stores/AppStore.jsx");
 var StatisticsTable = require("./StatisticsTable.jsx");
 var ChartAddons = require("./ChartAddons.jsx");
 
-
-
-var ChartAddons = React.createClass({
-    getInitialState: function(){
-        return {elasticY: true, elasticX: true};
-    },
-    filter: function(e){
-        var self = this;
-        var c = self.props.chart;
-        if(e.keyCode === 13){
-            //console.log(this.props.chart);
-            var f = [self.state.beg, self.state.end];
-            c.filterAll();
-            c.filter(f);
-        }
-
-    },
-    handleBeg: function(event){
-        this.setState({beg: event.target.value});
-    },
-    handleEnd: function(event){
-        this.setState({end: event.target.value});
-    },
-
-    handleElasticX: function(){
-        var c = this.props.chart;
-        //console.log("handle checkbox..");
-        //console.log((this.state.elasticY));
-        //var queryFilterBackup = queryFilter;
-        //c.elasticY(true);
-        //AppActions.refresh({});
-        //console.log(queryFilter);
-
-        if(this.state.elasticX === true){
-
-            c.elasticX(false);
-
-        } else {
-            //Elastic axis
-            c.elasticX(true);
-        }
-        //AppActions.refresh(queryFilter);
-
-        //c.elasticY(false);
-        c.filterAll();
-        dc.renderAll();
-        this.setState({elasticX: !this.state.elasticX});
-
-    },
-    handleElasticY: function(){
-        var c = this.props.chart;
-        if(this.state.elasticY === true){
-
-            c.elasticY(false);
-
-        } else {
-            //Elastic axis
-            c.elasticY(true);
-        }
-        //AppActions.refresh(queryFilter);
-
-        //c.elasticY(false);
-        c.filterAll();
-        dc.renderAll();
-        this.setState({elasticY: !this.state.elasticY});
-
-    },
-    handleInvertSelection: function() {
-        console.log(this.props.config.attributeName);
-        var attributeName = this.props.config.attributeName;
-        var c = this.props.chart;
-        var availableFilters = (this.props.data[attributeName].values);
-        var currentFilter = queryFilter[attributeName];
-        //console.log("current filter");
-        //console.log(currentFilter);
-        var invertedFilter = [];
-        for(var i in availableFilters){
-            var filter = availableFilters[i].key;
-            var flag = true;
-            for(var j in currentFilter){
-                if(filter === currentFilter[j]){
-                    flag = false;
-                }
-            }
-            if(flag){
-                invertedFilter.push(filter);
-            }
-            /*
-            //console.log(filter.key +" " + currentFilter);
-            if(currentFilter != filter.key){
-                //console.log('false');
-                invertedFilter.push(filter.key)
-            }
-            */
-        }
-        console.log(invertedFilter);
-        c.filter(null);
-        c.filter(invertedFilter);
-        ////c.filter({invert: invertedFilter});
-        console.log("filtered! woot");
-    },
-    render: function(){
-        var visType = this.props.config.visualization.visType;
-        var isFilterActive = this.props.isFilterActive;
-        //console.log(isFilterActive);
-        switch(visType){
-        case  "barChart":
-            return(
-                    <div>
-                    <div className="chartAddons">
-                        <label>
-                        Range:
-                        <input type="text" onChange={this.handleBeg} onKeyDown={this.filter} className="filterRangeInput" id={"filterBeg"+this.props.config.attributeName}/>
-                        -
-                        <input type="text" onChange={this.handleEnd} onKeyDown={this.filter} className="filterRangeInput" id={"filterEnd"+this.props.config.attributeName}/>
-                        </label>
-                    </div>
-                    <div className="chartAddons">
-                        <label>
-                        ElasticY:
-                        <input type="checkbox"  onChange={this.handleElasticY}  checked={this.state.elasticY}/>
-                        </label>
-                    </div>
-                    </div>
-                );
-        case "rowChart":
-            return(
-                    <div className="chartAddons">
-
-                        <label>
-                        ElasticX:
-                        <input type="checkbox" onChange={this.handleElasticX} checked={this.state.elasticX}/>
-                        </label>
-                        <br />
-                        {isFilterActive ?
-
-                        <button onClick={this.handleInvertSelection}>Invert Selection</button>
-                        :
-                            <div />
-                        }
-
-                   </div>
-                );
-        case "scatterPlot":
-            return(
-                    <div>
-                    <div className="chartAddons">
-                        <label>
-                        Range:
-                        <input type="text" onChange={this.handleBeg} onKeyDown={this.filter} id={"filterBeg"+this.props.config.attributeName}/>
-                        -
-                        <input type="text" onChange={this.handleEnd} onKeyDown={this.filter} id={"filterEnd"+this.props.config.attributeName}/>
-                        </label>
-                    </div>
-                    <div className="chartAddons">
-                        <label>
-                        ElasticY:
-                        <input type="checkbox"  onChange={this.handleElasticY}  checked={this.state.elasticY}/>
-                        </label>
-                    </div>
-                    </div>
-                );
-        default:
-            return(
-                    <div></div>
-                );
-
-        }
-
-    }
-});
 
 
 var FilteringAttribute = React.createClass({
@@ -361,7 +191,7 @@ var FilteringAttribute = React.createClass({
         case "barChart":
             c = dc.barChart(divId);
             var binFactor = self.props.config.visualization.binFactor;
-            var scale = (d3.scale.linear().domain([domain[0]-8, domain[1]+15])());
+            //var scale = (d3.scale.linear().domain([domain[0]-8, domain[1]+15])());
             var nBins = (domain[1]/binFactor);
             //console.log(Math.ceil(nBins));
             //console.log(scale);
@@ -371,7 +201,7 @@ var FilteringAttribute = React.createClass({
                 .x(d3.scale.linear().domain([domain[0]-10, domain[1]+15]))
                 //.barPadding(2)
                 .xUnits(function(){return nBins+1;})
-                .centerBar(true)
+                .centerBar(true);
                 //.xUnits(dc.units.fp.precision((1/binFactor)))
                 //.xUnits(function() {return 15})
                 //.xUnits(function(){return 500*(1/binFactor)})
@@ -533,8 +363,10 @@ var FilteringAttribute = React.createClass({
         if (self.state.showStatistics) {
             var attrStatistics = self.statistics[attributeName];
             for (var key in attrStatistics) {
-                attrStatistics[key] = Math.round(attrStatistics[key]*100)/100;
-                data.push({"Statistic": key, "Value": attrStatistics[key]});
+                if(attrStatistics.hasOwnProperty(key)){
+                  attrStatistics[key] = Math.round(attrStatistics[key]*100)/100;
+                  data.push({"Statistic": key, "Value": attrStatistics[key]});
+                }
             }
         }
 

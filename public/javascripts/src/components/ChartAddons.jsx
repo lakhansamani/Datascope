@@ -1,28 +1,32 @@
+/* global dc */
+/* global queryFilter */
 var React = require("react");
 
-var ChartAddons = React.createClass({
-    getInitialState: function(){
-        return {elasticY: true, elasticX: true};
-    },
-    filter: function(e){
+class ChartAddons extends React.Component {
+    constructor(props, context){
+        super(props, context);
+        this.state={elasticY: true, elasticX: true};
+    }
+    filter(e) {
         var self = this;
         var c = self.props.chart;
-        if(e.keyCode == 13){
+        if(e.keyCode === 13){
             //console.log(this.props.chart);
             var f = [self.state.beg, self.state.end];
             c.filterAll();
             c.filter(f);
         }
+    }
 
-    },
-    handleBeg: function(event){
+    handleBeg(event) {
         this.setState({beg: event.target.value});
-    },
-    handleEnd: function(event){
-        this.setState({end: event.target.value});
-    },
+    }
 
-    handleElasticX: function(){
+    handleEnd(event) {
+        this.setState({end: event.target.value});
+    }
+
+    handleElasticX() {
         var c = this.props.chart;
         //console.log("handle checkbox..");
         //console.log((this.state.elasticY));
@@ -46,8 +50,8 @@ var ChartAddons = React.createClass({
         dc.renderAll();
         this.setState({elasticX: !this.state.elasticX});
 
-    },
-    handleElasticY: function(){
+    }
+    handleElasticY() {
         var c = this.props.chart;
         //console.log("handle checkbox..");
         //console.log((this.state.elasticY));
@@ -72,8 +76,9 @@ var ChartAddons = React.createClass({
         dc.renderAll();
         this.setState({elasticY: !this.state.elasticY});
 
-    },
-    handleInvertSelection: function(event) {
+    }
+
+    handleInvertSelection() {
         console.log(this.props.config.attributeName);
         var attributeName = this.props.config.attributeName;
         var c = this.props.chart;
@@ -83,29 +88,27 @@ var ChartAddons = React.createClass({
         //console.log(currentFilter);
         var invertedFilter = [];
         for(var i in availableFilters){
+            if(!availableFilters.hasOwnProperty(i)){
+              continue;
+            }
             var filter = availableFilters[i].key;
             var flag = true;
             for(var j in currentFilter){
-                if(filter === currentFilter[j])
+                if(filter === currentFilter[j]){
                     flag = false;
+                }
             }
-            if(flag)
+            if(flag){
                 invertedFilter.push(filter);
-            /*
-            //console.log(filter.key +" " + currentFilter);
-            if(currentFilter != filter.key){
-                //console.log('false');
-                invertedFilter.push(filter.key)
             }
-            */
+
         }
-        //console.log(invertedFilter);
+
         c.filter(null);
         c.filter(invertedFilter);
-        ////c.filter({invert: invertedFilter});
-        //console.log("filtered! woot");
-    },
-    render: function(){
+
+    }
+    render() {
         var visType = this.props.config.visualization.visType;
         var isFilterActive = this.props.isFilterActive; 
         //console.log(isFilterActive);
@@ -154,6 +157,6 @@ var ChartAddons = React.createClass({
         }
 
     }
-});
+}
 
 module.exports = ChartAddons;

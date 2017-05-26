@@ -79,7 +79,7 @@ class ChartAddons extends React.Component {
     }
 
     handleInvertSelection() {
-        console.log(this.props.config.attributeName);
+
         var attributeName = this.props.config.attributeName;
         var c = this.props.chart;
         var availableFilters = (this.props.data[attributeName].values);

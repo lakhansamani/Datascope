@@ -4,12 +4,15 @@ var React = require("react");
 var TableCounts = 0;
 //var Decoder = require("../../stores/Decoder.js");
 var AppStore = require("../../stores/AppStore.jsx");
-var DataTable = React.createClass({
 
-    getInitialState: function(){
-        return {"id": Math.floor(Math.random(2)*100)};
-    },
-    decode: function(d) {
+class DataTable extends React.Component {
+
+    constructor(props, context){
+      super(props, context);
+        this.state= {"id": Math.floor(Math.random(2)*100)};
+    } 
+
+    decode(d) {
       //If data dictionary is provided then decode the tabel
       var decoder = AppStore.decoder.decoder;
       var self = this;
@@ -30,8 +33,10 @@ var DataTable = React.createClass({
 
       }
       return d;
-    },
-    componentDidMount: function(){
+    }
+
+
+    componentDidMount() {
         var self = this;
         var columns = [];
         var count=0;
@@ -100,8 +105,9 @@ var DataTable = React.createClass({
         $("#"+tableId).removeClass("display").addClass("table table-striped table-bordered");
 
         self.setState({"dataTable": dataTable});
-    },
-    componentWillReceiveProps: function(){
+    }
+
+    componentWillReceiveProps() {
         var dataTable = this.state.dataTable;
         //console.log(dataTable);
         if(dataTable){
@@ -110,8 +116,9 @@ var DataTable = React.createClass({
               dataTable.ajax.reload(); //jquery datatable fix
           }
         }
-    },
-    render: function(){
+    }
+
+    render() {
         //var tableAttribtes = [];
         //console.log(this.state.id);
         var id = this.state.id;
@@ -122,6 +129,6 @@ var DataTable = React.createClass({
                 </table>
             );
     }
-});
+}
 
 module.exports = DataTable;

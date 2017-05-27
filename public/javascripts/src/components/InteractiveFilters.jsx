@@ -8,20 +8,13 @@ var FilteringAttribute = require("./FilteringAttribute.jsx");
 
 var Glyphicon = ReactBootstrap.Glyphicon;
 var Masonry = require("react-masonry-component");
-//var Masonry = React.createFactory(require("react-masonry-component"))(React);
-/*
-var Masonry = React.createClass({
-    render: function() {
-        return <div />;
+
+class InteractiveFilters extends React.Component {
+    constructor(props, context) {
+      super(props, context);
+      return {full:false};
     }
-});
-*/
-var InteractiveFilters = React.createClass({
-    getInitialState: function(){
-        //console.log("Rendering interactive filters");
-        return {full:false};
-    },
-    fullView: function(){
+    fullView(){
         if(this.state.full){
             if(this.state.full === false){
                 this.setState({full: true});
@@ -34,11 +27,12 @@ var InteractiveFilters = React.createClass({
 
             this.setState({full:true});
         }
-    },
-    toggleShow: function(){
+    }
+    toggleShow(){
         this.setState({toggle: true});
-    },
-    render: function(){
+    }
+
+    render(){
         var filteringAttributes;
 
 
@@ -94,6 +88,6 @@ var InteractiveFilters = React.createClass({
         }
 
     }
-});
+}
 
 module.exports = InteractiveFilters;

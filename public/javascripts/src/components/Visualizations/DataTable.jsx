@@ -2,7 +2,7 @@
 /* global $ */
 var React = require("react");
 var TableCounts = 0;
-//var Decoder = require("../../stores/Decoder.js");
+
 var AppStore = require("../../stores/AppStore.jsx");
 
 class DataTable extends React.Component {
